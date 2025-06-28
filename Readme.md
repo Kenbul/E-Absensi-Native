@@ -1,1 +1,1 @@
-#E-Absensi Native Dengan PDO#
+SISTEM E-ABSENSI dengan menggunakan PHP Native
