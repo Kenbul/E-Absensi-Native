@@ -61,7 +61,7 @@
                         </td>
                         <td class="align-middle">
                             <a href="index.php?page=siswa&action=edit&Nik=<?= $siswa['Nik']; ?>" class="btn btn-warning "><i class="fa-solid fa-pen fa-lg"></i></a>
-                            <a href="index.php?page=delete&Nik=<?= $siswa['Nik']; ?>" class="btn btn-danger " onclick="confirmDelete(<?= $siswa['Nik']; ?>)"><i class="fa-solid fa-trash fa-lg"></i></a>
+                            <button class="btn btn-danger" data-page="siswa" data-id="<?= $siswa['Nisn']; ?>"><i class=" fa-solid fa-trash fa-lg"></i></button>
                         </td>
                     </tr>
                 <?php endforeach; ?>

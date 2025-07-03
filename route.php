@@ -15,7 +15,7 @@ $siswaController = new SiswaController($pdo);
 $authController = new AuthController($pdo);
 $jadwalMengajarController =  new JadwalMengajarController($pdo);
 $AbsensiController =  new AbsensiController($pdo);
-$page = $_GET['page'] ?? 'dashboard';
+$page = $_GET['page'] ?? 'login';
 
 switch ($page) {
     case 'login':
@@ -54,12 +54,12 @@ switch ($page) {
             $controller->create();
         } elseif ($action === 'store') {
             $controller->store();
-        } elseif ($action === 'edit' && isset($_GET['Nik'])) {
-            $controller->edit($_GET['Nik']); // Menampilkan form edit
+        } elseif ($action === 'edit' && isset($_GET['id'])) {
+            $controller->edit($_GET['id']); // Menampilkan form edit
         } elseif ($action === 'update') {
-            $controller->update($_POST['Nik']); // Memproses update data
+            $controller->update($_POST['id']); // Memproses update data
         } elseif ($action === 'delete') {
-            $controller->delete($_GET['Nik']);
+            $controller->delete($_GET['id']);
         } else {
             $controller->index();
         }

@@ -44,7 +44,15 @@
 <script src="assets/js/material-dashboard.min.js?v=3.2.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function confirmDelete(id) {
+    document.querySelectorAll('.btn-danger').forEach(button => {
+        button.addEventListener('click', function() {
+            const page = this.getAttribute('data-page');
+            const id = this.getAttribute('data-id');
+            confirmDelete(page, id);
+        });
+    });
+
+    function confirmDelete(page, id) {
         Swal.fire({
             title: "Yakin ingin menghapus?",
             text: "Data yang dihapus tidak dapat dikembalikan!",
@@ -55,7 +63,7 @@
             confirmButtonText: "Ya, hapus!"
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "index.php?page=guru&action=delete&id=" + id;
+                window.location.href = `index.php?page=${page}&action=delete&id=${id}`;
             }
         });
     }

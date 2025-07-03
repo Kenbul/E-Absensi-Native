@@ -30,7 +30,6 @@ class SiswaController
     }
     public function store()
     {
-        session_start();
         require 'config/database.php';      // $pdo harus ada!
 
         // Validasi minimal (mis. pastikan Nama tidak kosong) bisa ditambah di sini
@@ -144,19 +143,19 @@ class SiswaController
             }
         }
     }
-    public function delete($id)
+    public function delete($Nisn)
     {
         include 'config/database.php';
         try {
             // Hapus data Siswa berdasarkan ID
-            $query = "DELETE FROM Siswa WHERE id = :id";
-            $stmt = $pdo->prepare($query);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $query = "DELETE FROM siswa WHERE Nisn = :nisn";
+            $stmt  = $pdo->prepare($query);
+            $stmt->bindValue(':nisn', $Nisn, PDO::PARAM_INT);   
             $stmt->execute();
 
             // Set pesan sukses menggunakan session
             $_SESSION['success'] = "Data Siswa berhasil dihapus!";
-            header('Location: index.php?page=Siswa');
+            header('Location: index.php?page=siswa');
             exit;
         } catch (PDOException $e) {
             echo "Gagal menghapus data Siswa: " . $e->getMessage();

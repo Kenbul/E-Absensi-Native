@@ -57,7 +57,7 @@
                         </td>
                         <td class="align-middle">
                             <a href="index.php?page=guru&action=edit&id=<?= $guru['id']; ?>" class="btn btn-warning "><i class="fa-solid fa-pen fa-lg"></i></a>
-                            <a href="index.php?page=delete&id=<?= $guru['id']; ?>" class="btn btn-danger " onclick="confirmDelete(<?= $guru['id']; ?>)"><i class="fa-solid fa-trash fa-lg"></i></a>
+                            <button class="btn btn-danger" data-page="guru" data-id="<?= $guru['id']; ?>"><i class="fa-solid fa-trash fa-lg"></i></button>
                         </td>
                     </tr>
                 <?php endforeach; ?>

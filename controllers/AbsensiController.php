@@ -12,7 +12,7 @@ class AbsensiController
 
     public function index()
     {
-        $guru_id = $_SESSION['id'];
+        $guru_id = $_SESSION['user_id'];
         $page = 'Jadwal-Absensi-Siswa';
         $title = 'Absensi-Siswa';
         $jadwal = $this->JadwalModel->getByGuru();

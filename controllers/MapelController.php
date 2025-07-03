@@ -92,7 +92,7 @@ class MapelController
             // Hapus data mapel berdasarkan ID
             $query = "DELETE FROM mapel WHERE id = :id";
             $stmt = $pdo->prepare($query);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
 
             // Set pesan sukses menggunakan session

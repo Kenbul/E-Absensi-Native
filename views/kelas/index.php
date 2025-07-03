@@ -45,7 +45,7 @@
                         </td>
                         <td class="align-middle">
                             <a href="index.php?page=kelas&action=edit&id=<?= $kelas['id']; ?>" class="btn btn-warning "><i class="fa-solid fa-pen fa-lg"></i></a>
-                            <a href="index.php?page=delete&id=<?= $kelas['id']; ?>" class="btn btn-danger " onclick="confirmDelete(<?= $kelas['id']; ?>)"><i class="fa-solid fa-trash fa-lg"></i></a>
+                            <button class="btn btn-danger" data-page="kelas" data-id="<?= $kelas['id']; ?>"><i class="fa-solid fa-trash fa-lg"></i></button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
