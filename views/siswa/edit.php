@@ -88,14 +88,14 @@
                     <div class="input-group input-group-static mb-4">
                         <label for="exampleFormControlSelect1" class="ms-0">Kelas</label>
                         <select class="form-control" id="exampleFormControlSelect1" name="Kelas">
-                            <option value="7" <?= ($Siswa['Kelas'] == '7') ? 'selected' : ''; ?>>7</option>
-                            <option value="8" <?= ($Siswa['Kelas'] == '8') ? 'selected' : ''; ?>>8</option>
-                            <option value="9" <?= ($Siswa['Kelas'] == '9') ? 'selected' : ''; ?>>9</option>
+                            <option value="1" <?= ($Siswa['Kelas'] == '7') ? 'selected' : ''; ?>>7</option>
+                            <option value="2" <?= ($Siswa['Kelas'] == '8') ? 'selected' : ''; ?>>8</option>
+                            <option value="3" <?= ($Siswa['Kelas'] == '9') ? 'selected' : ''; ?>>9</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-success">Edit</button>
+            <button type="submit" class="btn btn-warning">Edit</button>
         </form>
     </div>
 </div>

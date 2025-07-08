@@ -43,6 +43,8 @@
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="assets/js/material-dashboard.min.js?v=3.2.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.min.js"></script>
 <script>
     document.querySelectorAll('.btn-danger').forEach(button => {
         button.addEventListener('click', function() {
@@ -67,6 +69,30 @@
             }
         });
     }
+
+    flatpickr("#jam-mulai", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true,
+        allowInput: true,
+        plugins: [new confirmDatePlugin({
+            confirmText: "OK",
+            showAlways: false // tampil hanya saat picker terbuka
+        })] // Ini tambahkan tombol OK
+    });
+
+    flatpickr("#jam-selesai", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true,
+        allowInput: true,
+        plugins: [new confirmDatePlugin({
+            confirmText: "OK",
+            showAlways: false // tampil hanya saat picker terbuka
+        })]
+    });
 </script>
 
 </body>

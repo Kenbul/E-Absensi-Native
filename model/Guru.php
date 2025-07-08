@@ -32,6 +32,15 @@ class Guru
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function nameById($id)
+    {
+        $query = "SELECT users.username As Nama, gurus.users_id FROM gurus JOIN users ON gurus.users_id = users.id WHERE gurus.id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     // Fungsi menampilkan nama guru berdasarkan id guuru
     public function getAllWithUsername()
     {
@@ -57,4 +66,5 @@ class Guru
         $stmt->execute(['email' => $email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function getGuruByName() {}
 }

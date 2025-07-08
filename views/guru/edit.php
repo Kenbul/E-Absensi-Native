@@ -99,7 +99,7 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-danger">Update</button>
+            <button type="submit" class="btn btn-warning">Update</button>
         </form>
     </div>
 </div>

@@ -44,6 +44,12 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="index.php?page=laporan">
+                        <i class="fa-solid fa-file-export"></i>
+                        <span class="nav-link-text ms-1">Laporan</span>
+                    </a>
+                </li>
             <?php endif; ?>
             <?php if ($_SESSION['role'] == 'Guru') : ?>
                 <li class="nav-item">

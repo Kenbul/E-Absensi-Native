@@ -7,6 +7,7 @@ require_once 'controllers/MapelController.php';
 require_once 'controllers/SiswaController.php';
 require_once 'controllers/JadwalMengajarController.php';
 require_once 'controllers/AbsensiController.php';
+require_once 'controllers/LaporanController.php';
 
 $guruController = new GuruController($pdo);
 $kelasController = new KelasController($pdo);
@@ -15,6 +16,7 @@ $siswaController = new SiswaController($pdo);
 $authController = new AuthController($pdo);
 $jadwalMengajarController =  new JadwalMengajarController($pdo);
 $AbsensiController =  new AbsensiController($pdo);
+$LaporanController =  new LaporanController($pdo);
 $page = $_GET['page'] ?? 'login';
 
 switch ($page) {
@@ -54,10 +56,10 @@ switch ($page) {
             $controller->create();
         } elseif ($action === 'store') {
             $controller->store();
-        } elseif ($action === 'edit' && isset($_GET['id'])) {
-            $controller->edit($_GET['id']); // Menampilkan form edit
+        } elseif ($action === 'edit' && isset($_GET['Nik'])) {
+            $controller->edit($_GET['Nik']); // Menampilkan form edit
         } elseif ($action === 'update') {
-            $controller->update($_POST['id']); // Memproses update data
+            $controller->update($_POST['Nik']); // Memproses update data
         } elseif ($action === 'delete') {
             $controller->delete($_GET['id']);
         } else {
@@ -134,6 +136,17 @@ switch ($page) {
             $controller->index();
         }
         break;
+    case 'laporan':
+        $controller = $LaporanController;
+        $action = $_GET['action'] ?? 'index';
+        if ($action === 'create') {
+            $controller->create();
+        } elseif ($action == 'pdf') {
+            $controller->exportPdf();
+        }
+         else {
+            $controller->index();
+        }
     default:
         echo "Halaman tidak ditemukan!";
         break;

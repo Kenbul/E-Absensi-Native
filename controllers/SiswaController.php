@@ -88,6 +88,8 @@ class SiswaController
         include 'config/database.php';
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $Nisn = $_POST['Nisn']; // ini jadi acuan untuk WHERE, bukan untuk update.
+            // var_dump($_POST['Nisn']);
+            // exit();
             $Nama = $_POST['Nama'];
             $Nik = $_POST['Nik'];
             $TempatLahir = $_POST['TempatLahir'];
@@ -150,7 +152,7 @@ class SiswaController
             // Hapus data Siswa berdasarkan ID
             $query = "DELETE FROM siswa WHERE Nisn = :nisn";
             $stmt  = $pdo->prepare($query);
-            $stmt->bindValue(':nisn', $Nisn, PDO::PARAM_INT);   
+            $stmt->bindValue(':nisn', $Nisn, PDO::PARAM_INT);
             $stmt->execute();
 
             // Set pesan sukses menggunakan session
