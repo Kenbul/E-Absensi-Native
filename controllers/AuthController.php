@@ -4,10 +4,14 @@ require_once 'model/Guru.php';
 class AuthController
 {
     private $guruModel;
+    private $userModel;
+    private $semesterModel;
 
     public function __construct($pdo)
     {
         $this->guruModel = new Guru($pdo);
+        $this->userModel = new User($pdo);
+        $this->semesterModel = new Semester($pdo);
     }
     public function showLoginForm()
     {
@@ -17,9 +21,6 @@ class AuthController
 
     public function login()
     {
-        // 0. Taruh session_start() sekali di file bootstrap / config,
-        //    atau pastikan tidak dipanggil dua kali.
-
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: index.php?page=login');
             exit;
@@ -28,8 +29,16 @@ class AuthController
         $email    = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
-        // 1. Ambil user dari tabel USERS, bukan guru. Sesuaikan model Anda.
-        $user = $this->guruModel->getGuruByEmail($email);   // SELECT id_user, email, password, role FROM users ...
+        // Inisialisasi counter percobaan login per email
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = [];
+        }
+        if (!isset($_SESSION['login_attempts'][$email])) {
+            $_SESSION['login_attempts'][$email] = 0;
+        }
+
+        // Ambil user
+        $user = $this->guruModel->getGuruByEmail($email);
 
         if (!$user) {
             $_SESSION['error'] = 'Email tidak terdaftar';
@@ -37,25 +46,41 @@ class AuthController
             exit;
         }
 
-        // 2. Verifikasi hash
+        // Verifikasi password & hitung percobaan
         if (!password_verify($password, $user['password'])) {
-            $_SESSION['error'] = 'Password salah';
+            $_SESSION['login_attempts'][$email]++;
+
+            if ($_SESSION['login_attempts'][$email] >= 2) {
+                $_SESSION['error'] = 'Jika anda lupa password silahkan hubungi admin';
+            } else {
+                $_SESSION['error'] = 'Password salah';
+            }
+
             header('Location: index.php?page=login');
             exit;
         }
 
-        // 3. Set session utama
-        $_SESSION['user_id']  = $user['id'];
-        $_SESSION['role']     = $user['role'];
-        // 4. (Opsional) jika role‑nya guru, simpan id_guru sekali saja
-        // if ($user['role'] === 'guru') {
-        //     $guru = $this->guruModel->findByUserId($user['id_user']); // SELECT id_guru ...
-        //     $_SESSION['guru_id'] = $guru['id_guru'] ?? null;
-        // }
+        // Reset counter jika login berhasil
+        $_SESSION['login_attempts'][$email] = 0;
+
+        // Ambil data user untuk set session
+        $coba = $this->userModel->findUser($email, $user['password']);
+        $semester = $this->semesterModel->where();
+
+        if ($coba['role'] == "Admin") {
+            $_SESSION['user_id'] = $coba['id'];
+            $_SESSION['role']     = $user['role'];
+            $_SESSION['semester_id'] = $semester['id'];
+        } else {
+            $_SESSION['user_id']  = $user['id'];
+            $_SESSION['role']     = $user['role'];
+            $_SESSION['semester_id'] = $semester['id'];
+        }
 
         header('Location: index.php?page=dashboard');
         exit;
     }
+
 
 
     public function logout()

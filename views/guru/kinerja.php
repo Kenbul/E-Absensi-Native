@@ -1,14 +1,6 @@
 <?php include "views/layouts/header.php" ?>
 <?php include "views/layouts/sidebar.php" ?>
 <?php include "views/layouts/navbar.php" ?>
-<a href="index.php?page=jadwal-mengajar&action=create" class="btn btn-success">Tambah-Jadwal</a>
-<?php if (isset($_SESSION['success'])) : ?>
-    <div class="alert alert-success" role="alert">
-        <?= $_SESSION['success'] ?>
-    </div>
-    <?php unset($_SESSION['success']); // supaya tidak muncul lagi saat reload 
-    ?>
-<?php endif; ?>
 <div class="card">
     <div class="table-responsive">
         <table class="table align-items-center mb-0">
@@ -16,12 +8,11 @@
             <thead>
                 <tr>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Hari</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">Guru</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">Mata-Pelajaran</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Mata-Pelajaran</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Kelas</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jam-Masuk</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jam-Keluar</th>
-                    <th class="text-secondary opacity-7">Aksi</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,14 +21,12 @@
                 foreach ($jadwal as $j) :
                 ?><tr>
                         <td class="text-center"><?= htmlspecialchars($j['hari']) ?></td>
-                        <td class=""><?= htmlspecialchars($j['nama_guru']) ?></td>
-                        <td class=""><?= htmlspecialchars($j['mapel']) ?></td>
+                        <td><?= htmlspecialchars($j['Mapel']) ?></td>
                         <td class="text-center"><?= htmlspecialchars($j['Kelas']) ?></td>
                         <td class="text-center"><?= htmlspecialchars($j['jam_mulai']) ?></td>
                         <td class="text-center"><?= htmlspecialchars($j['jam_selesai']) ?></td>
-                        <td>
-                            <a href="index.php?page=jadwal-mengajar&action=edit&id=<?= $j['id']; ?>" class="btn btn-warning "><i class="fa-solid fa-pen fa-lg"></i></a>
-                            <button class="btn btn-danger" data-page="jadwal-mengajar" data-id="<?= $j['id']; ?>"><i class="fa-solid fa-trash fa-lg"></i></button>
+                        <td class="text-center">
+                            <a href="index.php?page=guru&action=view_kinerja&id=<?= $j['guru_id'] ?>" class="btn btn-secondary">Lihat-Kinerja</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -45,5 +34,4 @@
         </table>
     </div>
 </div>
-
 <?php include "views/layouts/footer.php" ?>

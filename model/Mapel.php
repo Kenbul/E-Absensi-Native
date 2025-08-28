@@ -26,4 +26,15 @@ class Mapel
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function getMapelByJadwalId($jadwalId)
+    {
+        $sql = "SELECT m.id, m.Mapel AS Mapel
+            FROM jadwal_mengajar jm
+            JOIN guru_pelajaran gp ON jm.guru_pelajaran_id = gp.id
+            JOIN mapel m ON gp.pelajaran_id = m.id
+            WHERE jm.id = :jadwalId";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['jadwalId' => $jadwalId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

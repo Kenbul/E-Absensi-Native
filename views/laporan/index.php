@@ -1,7 +1,13 @@
 <?php include "views/layouts/header.php" ?>
 <?php include "views/layouts/sidebar.php" ?>
 <?php include "views/layouts/navbar.php" ?>
-<h1><?= $page ?></h1>
+<?php if (isset($_SESSION['error'])) : ?>
+    <div class="alert alert-danger" role="alert">
+        <?= $_SESSION['error'] ?>
+    </div>
+    <?php unset($_SESSION['error']); // supaya tidak muncul lagi saat reload 
+    ?>
+<?php endif; ?>
 <div class="card">
     <div class="card-body">
         <form action="index.php?page=laporan&action=create" method="post">
@@ -19,7 +25,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="input-group input-group-static mb-4">
                         <label for="exampleFormControlSelect1" class="ms-0">Kelas</label>
                         <select name="kelas_id" class="form-control">
@@ -27,6 +33,19 @@
                             <?php foreach ($kelas as $k) : ?>
                                 <option value="<?= $k['id'] ?>">
                                     <?= htmlspecialchars($k['Kelas']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group input-group-static mb-4">
+                        <label for="exampleFormControlSelect1" class="ms-0">Mapel</label>
+                        <select name="mapel_id" class="form-control">
+                            <option value="">Pilih Mapel</option>
+                            <?php foreach ($mapel as $m) : ?>
+                                <option value="<?= $m['id'] ?>">
+                                    <?= htmlspecialchars($m['Mapel']) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>

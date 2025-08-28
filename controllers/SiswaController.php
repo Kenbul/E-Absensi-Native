@@ -102,6 +102,8 @@ class SiswaController
             $NamaIbu = $_POST['NamaIbu'];
             $NamaWali = $_POST['NamaWali'];
             $Kelas = $_POST['Kelas'];
+            // var_dump($Kelas);
+            // exit();
 
             try {
                 $query = "UPDATE Siswa SET 

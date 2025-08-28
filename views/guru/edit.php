@@ -4,19 +4,22 @@
 <div class="card card-frame">
     <div class="card-body">
         <form action="index.php?page=guru&action=update" method="post">
-        <input type="hidden" name="id" value="<?= $guru['id'] ?>">
+            <input type="hidden" name="id" value="<?= $guru['id'] ?>">
             <div class="input-group input-group-static mb-4">
+                <label for="">Nama-Guru</label>
                 <input type="text" class="form-control" name="Nama" value="<?= $guru['username'] ?>">
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="input-group input-group-dynamic mb-4 ">
-                        <input type="number" class="form-control" name="Nik" value="<?= $guru['Nik'] ?>">
+                    <div class="input-group input-group-static mb-4 ">
+                        <label for="">Nik</label>
+                        <input type="text" class="form-control" name="Nik" value="<?= $guru['Nik'] ?>">
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="input-group input-group-dynamic mb-4 ">
-                        <input type="number" class="form-control" name="Nuptk" value="<?= $guru['Nuptk'] ?>">
+                    <div class="input-group input-group-static mb-4 ">
+                        <label for="">Nuptk</label>
+                        <input type="text" class="form-control" name="Nuptk" value="<?= $guru['Nuptk'] ?>">
                     </div>
                 </div>
             </div>
@@ -56,26 +59,30 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="input-group input-group-dynamic mb-4">
-                        <input type="number" class="form-control" name="NoHp" value="<?= $guru['NoHp'] ?>">
+                    <div class="input-group input-group-static mb-4">
+                        <label for="">No-Hp</label>
+                        <input type="text" class="form-control" name="NoHp" value="<?= $guru['NoHp'] ?>">
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="input-group input-group-dynamic mb-4">
+                    <div class="input-group input-group-static mb-4">
+                        <label for="">Email</label>
                         <input type="email" class="form-control" name="Email" value="<?= $guru['email'] ?>">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="input-group input-group-dynamic mb-4">
+                    <div class="input-group input-group-static mb-4">
+                        <label for="">Email-Madrasah</label>
                         <input type="email" class="form-control" name="EmailMadrasah" value="<?= $guru['EmailMadrasah'] ?>">
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="input-group input-group-dynamic mb-4">
+                    <div class="input-group input-group-static mb-4">
                         <label class="form-label">Password</label>
                         <input type="password" class="form-control" name="Password">
+                        <small>Kosongkan jika tidak ingin mengganti password</small>
                     </div>
                 </div>
             </div>

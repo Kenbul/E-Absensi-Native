@@ -1,13 +1,21 @@
 <?php
 require_once 'model/Guru.php';
+require_once 'model/User.php';
+require_once 'model/JadwalMengajar.php';
 
 class GuruController
 {
     private $guruModel;
+    private $jadwalModel;
+    private $userModel;
+    private $semesterModel;
 
     public function __construct($pdo)
     {
         $this->guruModel = new Guru($pdo);
+        $this->userModel = new User($pdo);
+        $this->jadwalModel = new JadwalMengajar($pdo);
+        $this->semesterModel = new Semester($pdo);
     }
 
     // Fungsi untuk menampilkan halaman index guru
@@ -103,6 +111,7 @@ class GuruController
         $TglLahir = $_POST['TglLahir'];
         $NoHp = $_POST['NoHp'];
         $EmailMadrasah = $_POST['EmailMadrasah'];
+        $Status = $_POST['Status'];
         $Penempatan = $_POST['Penempatan'];
 
         // Cek apakah password diisi
@@ -129,7 +138,7 @@ class GuruController
             $queryGuru = "UPDATE gurus SET 
                       Nik = :Nik, Nuptk = :Nuptk, StatusKepegawaian = :StatusKepegawaian, 
                       JenisKelamin = :JenisKelamin, TempatLahir = :TempatLahir, 
-                      TglLahir = :TglLahir, NoHp = :NoHp, EmailMadrasah = :EmailMadrasah, 
+                      TglLahir = :TglLahir, NoHp = :NoHp, EmailMadrasah = :EmailMadrasah, Status = :Status,
                       Penempatan = :Penempatan 
                       WHERE id = :id";
 
@@ -142,6 +151,7 @@ class GuruController
             $stmtGuru->bindParam(':TglLahir', $TglLahir);
             $stmtGuru->bindParam(':NoHp', $NoHp);
             $stmtGuru->bindParam(':EmailMadrasah', $EmailMadrasah);
+            $stmtGuru->bindParam(':Status', $Status);
             $stmtGuru->bindParam(':Penempatan', $Penempatan);
             $stmtGuru->bindParam(':id', $id);
             $stmtGuru->execute();
@@ -175,5 +185,113 @@ class GuruController
         } catch (PDOException $e) {
             echo "Gagal menghapus data guru: " . $e->getMessage();
         }
+    }
+    public function importForm()
+    {
+        include 'views/guru/guru_import.php';
+    }
+    public function importData()
+    {
+
+        if (isset($_FILES['file']['tmp_name'])) {
+            $file = $_FILES['file']['tmp_name'];
+            $handle = fopen($file, "r");
+
+            // Lewati header
+
+            while (($row = fgetcsv($handle, 1000, ";")) !== false) {
+                if (count($row) < 13) continue; {
+                    [
+                        $username,
+                        $email,
+                        $password,
+                        $nik,
+                        $nuptk,
+                        $statusKepegawaian,
+                        $jenisKelamin,
+                        $tempatLahir,
+                        $tglLahir,
+                        $noHp,
+                        $emailMadrasah,
+                        $status,
+                        $penempatan
+                    ] = $row;
+
+                    // Insert ke tabel users
+                    $user_id = $this->userModel->insert($username, $email, $password);
+                    // Insert ke tabel guru
+                    $this->guruModel->insert([
+                        'users_id' => $user_id,
+                        'Nik' => $nik,
+                        'Nuptk' => $nuptk,
+                        'StatusKepegawaian' => $statusKepegawaian,
+                        'JenisKelamin' => $jenisKelamin,
+                        'TempatLahir' => $tempatLahir,
+                        'TglLahir' => $tglLahir,
+                        'NoHp' => $noHp,
+                        'EmailMadrasah' => $emailMadrasah,
+                        'Status' => $status,
+                        'Penempatan' => $penempatan,
+                    ]);
+                }
+            }
+            fclose($handle);
+            echo "<script>alert('Import berhasil!'); window.location='index.php?route=guru';</script>";
+        } else {
+            echo "File tidak ditemukan.";
+        }
+    }
+    public function view($id)
+    {
+        $page = 'View-Data-Guru';
+        $guru = $this->guruModel->findById($id);
+        $jadwal = $this->guruModel->getJadwalByGuruId($id);
+        // var_dump($jadwal['Mapel']);
+        // die;
+        if (!$jadwal) {
+            $_SESSION['danger'] = "Jadwal Belum Ada";
+        }
+
+        if (!$guru) {
+            die("Data guru tidak ditemukan.");
+        }
+        include 'views/guru/view.php';
+    }
+    public function kinerja($id)
+    {
+        $page = 'Kinerja-Guru';
+        $jadwal = $this->guruModel->getJadwalByGuruId($id);
+
+        include 'views/guru/kinerja.php';
+    }
+    public function viewKinerja($id)
+    {
+        $page = 'View-Kinerja-Guru';
+        $jadwal = $this->jadwalModel->findByGuru($id);
+        $semester_id = $_SESSION['semester_id'];
+        $tgljadwal = $this->semesterModel->findById($semester_id);
+        $tanggal_mulai = $tgljadwal['tanggal_mulai'];
+        $tanggal_selesai = $tgljadwal['tanggal_selesai'];
+        $kinerja = $this->guruModel->getJumlahAbsensiGuru($id, $semester_id);
+
+        include 'views/guru/detailKinerja.php';
+    }
+    public function KinerjaGuru()
+    {
+        $keywordSemester = $_SESSION['semester_id'];
+        $kinerja = $this->guruModel->getKinerjaGuru($keywordSemester);
+        $semester = $this->semesterModel->getAll();
+        if ($keywordSemester == '') {
+            $_SESSION['option'] = "Silahkan Masukan Jumlah Tahun Ajaran";
+            $kinerja = $this->guruModel->getKinerjaGuru($keywordSemester);
+        } else {
+            $kinerja = $this->guruModel->getKinerjaGuru($keywordSemester);
+        }
+
+        // var_dump($kinerja);
+        // die;
+        $page = 'View-Kinerja-Guru';
+
+        include 'views/guru/viewKinerja.php';
     }
 }

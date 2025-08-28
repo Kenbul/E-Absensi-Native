@@ -23,6 +23,33 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css">
+    <style>
+        @media (max-width: 1199.98px) {
+            #sidenav-main {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+                z-index: 9999;
+            }
+
+            #sidenav-main.show-sidebar {
+                transform: translateX(0);
+            }
+
+            #sidebarOverlay {
+                display: block;
+            }
+        }
+
+        #sidebarOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 9998;
+        }
+    </style>
 </head>
 
 <body class="g-sidenav-show  bg-gray-200"></body>

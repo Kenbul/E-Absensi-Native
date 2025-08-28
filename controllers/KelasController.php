@@ -88,6 +88,11 @@ class KelasController
     public function delete($id)
     {
         include 'config/database.php';
+        if ($this->kelasModel->isKelasInUse($id)) {
+            $_SESSION['success'] = "Data kelas tidak dapat dihapus karena masih digunakan di tabel lain.!";
+            header('Location: index.php?page=kelas');
+            exit;
+        }
         try {
             // Hapus data kelas berdasarkan ID
             $query = "DELETE FROM kelas WHERE id = :id";

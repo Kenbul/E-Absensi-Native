@@ -55,7 +55,11 @@
         table.laporan td {
             border: 1px solid #000;
             padding: 5px;
-            text-align: left;
+            text-align: center;
+        }
+
+        table.laporan th {
+            background-color: #f2f2f2;
         }
 
         .ttd {
@@ -73,7 +77,7 @@
 <body>
 
     <div class="kop">
-        <img src="assets/img/logo.png" alt="logo">
+        <img src="http://localhost/E-Absensi-Native/assets/img/logo.png" alt="logo">
         <h2>BALAI PENDIDIKAN</h2>
         <h3>PONDOK MODERN BAITUSSALAM</h3>
         <p>Jl. Imam Bonjol Lingkungan V Kel. Labuhan Ruku Kec. Talawi Kab. Batu Bara 21254</p>
@@ -92,6 +96,13 @@
             <td>:</td>
             <td><?= htmlspecialchars($namaKelas) ?></td>
         </tr>
+        <?php if (!empty($namaMapel)): ?>
+            <tr>
+                <td>Mata Pelajaran</td>
+                <td>:</td>
+                <td><?= htmlspecialchars($namaMapel) ?></td>
+            </tr>
+        <?php endif; ?>
         <tr>
             <td>Periode</td>
             <td>:</td>
@@ -102,21 +113,38 @@
     <table class="laporan">
         <thead>
             <tr>
-                <th>Tanggal</th>
+                <th>No</th>
                 <th>NISN</th>
-                <th>Nama</th>
-                <th>Status</th>
+                <th>Nama Siswa</th>
+                <th>Hadir</th>
+                <th>Izin</th>
+                <th>Sakit</th>
+                <th>Alpha</th>
+                <th>Total Pertemuan</th>
+                <th>% Hadir</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($data as $r): ?>
+            <?php if (!empty($data)): ?>
+                <?php $no = 1;
+                foreach ($data as $r): ?>
+                    <tr>
+                        <td><?= $no++ ?></td>
+                        <td><?= $r['Nisn']; ?></td>
+                        <td style="text-align: left;"><?= htmlspecialchars($r['nama_siswa']); ?></td>
+                        <td><?= $r['total_hadir']; ?></td>
+                        <td><?= $r['total_izin']; ?></td>
+                        <td><?= $r['total_sakit']; ?></td>
+                        <td><?= $r['total_alpha']; ?></td>
+                        <td><?= $r['total_pertemuan']; ?></td>
+                        <td><?= $r['persen_hadir']; ?>%</td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
                 <tr>
-                    <td><?= $r['tanggal']; ?></td>
-                    <td><?= $r['Nisn']; ?></td>
-                    <td><?= htmlspecialchars($r['nama_siswa']); ?></td>
-                    <td><?= $r['status']; ?></td>
+                    <td colspan="9">Tidak ada data absensi pada periode ini.</td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endif; ?>
         </tbody>
     </table>
 
@@ -125,7 +153,7 @@
             <td>
                 Batu Bara, <?= date('d F Y') ?><br>
                 Hormat Kami,<br><br><br><br>
-                (_____________________)
+                (<?= isset($penandatangan) ? htmlspecialchars($penandatangan) : '________________' ?>)
             </td>
         </tr>
     </table>
