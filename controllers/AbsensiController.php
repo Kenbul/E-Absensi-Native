@@ -35,6 +35,33 @@ class AbsensiController
         include 'views/absensi/index.php';
     }
 
+    public function ajaxAbsensi()
+    {
+        $guru_id  = $_SESSION['user_id'];
+        $kelas_id = $_GET['kelas_id'] ?? '';
+        $mapel_id = $_GET['mapel_id'] ?? '';
+
+        $absensi = [];
+        if (!empty($kelas_id) && !empty($mapel_id)) {
+            $absensi = $this->JadwalModel->showAbsensiFiltered($guru_id, $kelas_id, $mapel_id);
+        }
+
+        include 'views\absensi\partials\tabel.php';
+    }
+    public function getMapelByKelas()
+    {
+        $guru_id  = $_SESSION['user_id'];
+        $kelas_id = $_GET['kelas_id'] ?? 0;
+
+        // Panggil model untuk ambil mapel berdasarkan kelas + guru
+        $mapelList = $this->JadwalModel->getMapelByGuruAndKelas($guru_id, $kelas_id);
+
+        header('Content-Type: application/json');
+        echo json_encode($mapelList);
+        exit;
+    }
+
+
     public function showAbsensi($kelas)
     {
         $page = 'Form-Absensi';
@@ -75,6 +102,11 @@ class AbsensiController
                 ':tanggal' => $tanggal
             ]);
             $absensiCount = $stmtCheck->fetchColumn();
+            if ($absensiCount = 0) {
+                echo 'Berhasil';
+                exit;
+            }
+
 
             if ($absensiCount > 0) {
                 $_SESSION['error'] = 'Tidak dapat melakukan Absensi kembali, Absensi untuk tanggal ini sudah dilakukan.';
@@ -130,7 +162,7 @@ class AbsensiController
     public function updateAbsensi()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = (int)$_POST['id'];
+            $id     = (int)$_POST['id'];
             $status = $_POST['status'] ?? '';
 
             $absensi = $this->absensiModel->findById($id);
@@ -146,12 +178,49 @@ class AbsensiController
                 exit;
             }
 
+            // Update status
             $this->absensiModel->updateStatus($id, $status);
+
+            // Pesan sukses
             $_SESSION['success'] = "Data absensi berhasil diperbarui.";
-            header('Location: index.php?page=absensi');
+
+            // Arahkan kembali ke halaman edit absensi
+            header("Location: index.php?page=absensi&id=" . $id);
             exit;
         }
     }
+    public function updateAbsensiAjax()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id     = (int)$_POST['id'];
+            $status = $_POST['status'] ?? '';
+
+            $absensi = $this->absensiModel->findById($id);
+
+            if (!$absensi) {
+                echo json_encode(['success' => false, 'message' => 'Data tidak ditemukan']);
+                exit;
+            }
+
+            // Validasi 1x24 jam
+            if ((strtotime('now') - strtotime($absensi['tanggal'])) > 86400) {
+                echo json_encode(['success' => false, 'message' => 'Data absensi sudah terkunci']);
+                exit;
+            }
+
+            $this->absensiModel->updateStatus($id, $status);
+
+            echo json_encode([
+                'success' => true,
+                'id' => $id,
+                'status' => $status,
+                'message' => 'Data berhasil diupdate'
+            ]);
+            exit;
+        }
+    }
+
+
     public function edit($id) {}
     public function update($id) {}
     public function delete($id) {}

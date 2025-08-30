@@ -31,15 +31,8 @@ class siswa_detail
     }
     public function updateStatus($id, $status)
     {
-        $sql = "UPDATE siswa_detail
-            SET status = :status
-            WHERE id = :id
-            LIMIT 1";
-
+        $sql = "UPDATE siswa_detail SET status = :status WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([
-            ':status' => $status,
-            ':id'     => $id
-        ]);
+        return $stmt->execute([':status' => $status, ':id' => $id]);
     }
 }

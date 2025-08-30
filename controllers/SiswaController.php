@@ -17,13 +17,13 @@ class SiswaController
     // Fungsi untuk menampilkan halaman index Siswa
     public function index()
     {
-        $page = 'Data Siswa';
+        $page = 'Data Santri';
         $datasiswa = $this->SiswaModel->getAll();
         include 'views/siswa/index.php';
     }
     public function create()
     {
-        $page = 'Tambah Data Siswa';
+        $page = 'Tambah Data Santri';
         $Siswa = $this->SiswaModel->getAll(); // Ambil data dari model
         $datakelas = $this->KelasModel->getAll();
         include 'views/Siswa/tambah.php'; // Kirim data ke view
@@ -60,23 +60,23 @@ class SiswaController
             // var_dump($stmt);
             // exit();
 
-            $_SESSION['success'] = 'Data Siswa berhasil ditambahkan';
+            $_SESSION['success'] = 'Data Santri berhasil ditambahkan';
             header('Location: index.php?page=siswa');
             exit;
         } catch (PDOException $e) {
             // Tampilkan pesan error mentah hanya di lingkungan dev
-            die('Gagal menambahkan data siswa: ' . $e->getMessage());
+            die('Gagal menambahkan data Santri: ' . $e->getMessage());
         }
     }
 
     public function edit($Nik)
     {
-        $page = 'Edit Data Siswa';
+        $page = 'Edit Data Santri';
         $Siswa = $this->SiswaModel->findById($Nik);
         // var_dump($Siswa);
         // die;
         if (!$Siswa) {
-            $_SESSION['error'] = "Data Siswa tidak ditemukan!";
+            $_SESSION['error'] = "Data Santri tidak ditemukan!";
             header('Location: index.php?page=Siswa');
             exit;
         }
@@ -158,11 +158,11 @@ class SiswaController
             $stmt->execute();
 
             // Set pesan sukses menggunakan session
-            $_SESSION['success'] = "Data Siswa berhasil dihapus!";
+            $_SESSION['success'] = "Data Santri berhasil dihapus!";
             header('Location: index.php?page=siswa');
             exit;
         } catch (PDOException $e) {
-            echo "Gagal menghapus data Siswa: " . $e->getMessage();
+            echo "Gagal menghapus data Santri: " . $e->getMessage();
         }
     }
 }

@@ -26,7 +26,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="index.php?page=siswa">
                         <i class="fa-solid fa-users fa-lg"></i>
-                        <span class="nav-link-text ms-1">Data-Siswa</span>
+                        <span class="nav-link-text ms-1">Data-Santri</span>
                     </a>
                 </li>
                 <li class="nav-item">

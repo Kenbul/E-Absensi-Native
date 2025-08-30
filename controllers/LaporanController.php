@@ -122,4 +122,28 @@ class LaporanController
         echo $dompdf->output();
         exit;
     }
+    public function getKelasByGuru()
+    {
+        $guru_id = $_GET['guru_id'] ?? null;
+        header('Content-Type: application/json');
+        if ($guru_id) {
+            $data = $this->JadwalModel->getKelasByGuru($guru_id);
+            echo json_encode($data);
+        } else {
+            echo json_encode([]);
+        }
+    }
+
+    public function getMapelByGuruKelas()
+    {
+        $guru_id  = $_GET['guru_id'] ?? null;
+        $kelas_id = $_GET['kelas_id'] ?? null;
+        header('Content-Type: application/json');
+        if ($guru_id && $kelas_id) {
+            $data = $this->JadwalModel->getMapelByGuruKelas($guru_id, $kelas_id);
+            echo json_encode($data);
+        } else {
+            echo json_encode([]);
+        }
+    }
 }

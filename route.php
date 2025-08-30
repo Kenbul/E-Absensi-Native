@@ -170,6 +170,12 @@ switch ($page) {
             $controller->updateAbsensi(); // Memproses update data
         } elseif ($action === 'delete') {
             $controller->delete($_GET['id']);
+        } elseif ($action === 'ajaxabsensi') {
+            $controller->ajaxAbsensi();
+        } elseif ($action === 'get_mapel_by_kelas') {
+            $controller->getMapelByKelas();
+        } elseif ($action === 'update_ajax') {
+            $controller->updateAbsensiAjax();
         } else {
             $controller->index();
         }
@@ -177,13 +183,20 @@ switch ($page) {
     case 'laporan':
         $controller = $LaporanController;
         $action = $_GET['action'] ?? 'index';
+
         if ($action === 'create') {
             $controller->create();
-        } elseif ($action == 'pdf') {
+        } elseif ($action === 'pdf') {
             $controller->exportPdf();
+        } elseif ($action === 'get_kelas_by_guru') {
+            $controller->getKelasByGuru();
+        } elseif ($action === 'get_mapel_by_guru_kelas') {
+            $controller->getMapelByGuruKelas();
         } else {
             $controller->index();
         }
+        break;
+
     default:
         echo "Halaman tidak ditemukan!";
         break;

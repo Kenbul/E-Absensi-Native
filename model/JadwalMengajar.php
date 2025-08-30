@@ -312,4 +312,36 @@ class JadwalMengajar
         ]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getMapelByGuruAndKelas($guru_id, $kelas_id)
+    {
+        $sql = "SELECT DISTINCT m.id, m.Mapel
+            FROM jadwal_mengajar jm
+            JOIN guru_pelajaran gp ON jm.guru_pelajaran_id = gp.id
+            JOIN mapel m ON gp.pelajaran_id = m.id
+            WHERE gp.guru_id = :guru_id
+              AND jm.kelas_id = :kelas_id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':guru_id' => $guru_id,
+            ':kelas_id' => $kelas_id
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getMapelByGuruKelas($guru_id, $kelas_id)
+    {
+        $sql = "SELECT DISTINCT m.id, m.Mapel
+                FROM jadwal_mengajar jm
+                JOIN guru_pelajaran gp ON jm.guru_pelajaran_id = gp.id
+                JOIN mapel m ON gp.pelajaran_id = m.id
+                WHERE gp.guru_id = :guru_id
+                  AND jm.kelas_id = :kelas_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':guru_id' => $guru_id,
+            ':kelas_id' => $kelas_id
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
