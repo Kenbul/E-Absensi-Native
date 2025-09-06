@@ -7,7 +7,11 @@ if (session_status() === PHP_SESSION_NONE) {
 <?php
 require_once 'config/config.php';
 protectRoute();
-$currentTime = date("H:i:s");
+date_default_timezone_set('Asia/Jakarta'); // pastikan sesuai timezone
+
+$hariSekarang = date('l'); // contoh: Monday, Tuesday...
+$jamSekarang  = date('H:i:s'); // jam sekarang format 24 jam
+
 
 
 include './config/database.php';
@@ -296,10 +300,17 @@ try {
                                     <td class="text-center"><?= htmlspecialchars($j['jam_mulai']) ?></td>
                                     <td class="text-center"><?= htmlspecialchars($j['jam_selesai']) ?></td>
                                     <td>
-                                        <?php if ($currentTime >= $j['jam_mulai'] && $currentTime <= $j['jam_selesai']): ?>
+                                        <?php
+                                        // Cek hari
+                                        $matchHari = strtolower($j['hari']) === strtolower(date('l', strtotime('now')));
+
+                                        // Cek jam
+                                        $matchJam = ($jamSekarang >= $j['jam_mulai'] && $jamSekarang <= $j['jam_selesai']);
+
+                                        if ($matchHari && $matchJam): ?>
                                             <a href="index.php?page=absensi&action=showAbsensi&kelas=<?= $j['kelas_id'] ?>&mapel_id=<?= $j['mapel_id'] ?>" class="btn btn-success">Absensi</a>
                                         <?php else: ?>
-                                            <button class="btn btn-secondary" disabled>Di Luar Jam</button>
+                                            <button class="btn btn-secondary" disabled>Di luar jadwal</button>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
