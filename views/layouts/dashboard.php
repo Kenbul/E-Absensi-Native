@@ -7,6 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <?php
 require_once 'config/config.php';
 protectRoute();
+$currentTime = date("H:i:s");
 
 
 include './config/database.php';
@@ -295,7 +296,11 @@ try {
                                     <td class="text-center"><?= htmlspecialchars($j['jam_mulai']) ?></td>
                                     <td class="text-center"><?= htmlspecialchars($j['jam_selesai']) ?></td>
                                     <td>
-                                        <a href="index.php?page=absensi&action=showAbsensi&kelas=<?= $j['kelas_id'] ?>&mapel_id=<?= $j['mapel_id'] ?>" class="btn btn-success">Absensi</a>
+                                        <?php if ($currentTime >= $j['jam_mulai'] && $currentTime <= $j['jam_selesai']): ?>
+                                            <a href="index.php?page=absensi&action=showAbsensi&kelas=<?= $j['kelas_id'] ?>&mapel_id=<?= $j['mapel_id'] ?>" class="btn btn-success">Absensi</a>
+                                        <?php else: ?>
+                                            <button class="btn btn-secondary" disabled>Di Luar Jam</button>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
